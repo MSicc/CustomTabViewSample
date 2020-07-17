@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="CustomTabViewTest.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:local="clr-namespace:CustomTabViewTest"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:DataType="local:MainViewModel"
+    mc:Ignorable="d">
+
+<Grid x:DataType="{x:Null}" RowSpacing="0">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="45" />
+        <RowDefinition Height="45" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <CollectionView
+        x:Name="CustomTabsView"
+        Grid.Row="1"
+        HorizontalScrollBarVisibility="Never"
+        ItemSizingStrategy="MeasureAllItems"
+        ItemsSource="{Binding TabVms}"
+        ItemsUpdatingScrollMode="KeepItemsInView"
+        SelectedItem="{Binding CurrentTabVm, Mode=TwoWay}"
+        SelectionMode="Single"
+        VerticalScrollBarVisibility="Never">
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout Orientation="Horizontal" />
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="local:TabViewModel">
+                <Grid RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="3" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        x:Name="TitleLabel"
+                        Grid.Row="0"
+                        Padding="15,0"
+                        FontAttributes="Bold"
+                        FontSize="Small"
+                        HeightRequest="50"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding Title}"
+                        TextColor="White"
+                        VerticalTextAlignment="Center" />
+                    <BoxView
+                        x:Name="ActiveIndicator"
+                        Grid.Row="1"
+                        BackgroundColor="Red"
+                        IsVisible="{Binding IsSelected, Mode=TwoWay}" />
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
+    <CarouselView
+        Grid.Row="2"
+        CurrentItem="{Binding CurrentTabVm, Mode=TwoWay}"
+        CurrentItemChanged="CarouselView_CurrentItemChanged"
+        HorizontalScrollBarVisibility="Never"
+        IsScrollAnimated="True"
+        IsSwipeEnabled="True"
+        ItemsSource="{Binding TabVms}"
+        VerticalScrollBarVisibility="Never">
+        <CarouselView.ItemTemplate>
+            <DataTemplate x:DataType="local:TabViewModel">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        Grid.Row="0"
+                        Margin="10"
+                        LineBreakMode="WordWrap"
+                        Text="{Binding Content}"
+                        VerticalTextAlignment="Center" />
+                </Grid>
+            </DataTemplate>
+        </CarouselView.ItemTemplate>
+    </CarouselView>
+</Grid>
+</ContentPage>
